@@ -17,14 +17,25 @@ private $dbh;
    * @param string $charset 
    */
 public function connectDB($host,$user,$pass, $db, $charset){
-
+  
   mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
   try {
-    $this->dbh = new mysqli($host, $user, $pass, $db);
+    $this->dbh = new mysqli($host, $user, $pass);
+    $this->dbh->select_db($db);
     $this->dbh->set_charset($charset);
     return true;
   } catch (\mysqli_sql_exception $e) {
-       throw new \mysqli_sql_exception($e->getMessage(), $e->getCode());
+    $this->dbh->query("CREATE DATABASE $db");
+    $this->dbh->select_db($db);
+    $this->dbh->query("CREATE TABLE `person` (
+      `UID` int(11) NOT NULL,
+      `Name` varchar(100) NOT NULL,
+      `Age` varchar(100) NOT NULL,
+      `Email` varchar(100) NOT NULL,
+      `Phone` varchar(100) NOT NULL,
+      `Gender` varchar(100) NOT NULL
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+    $this->dbh->set_charset($charset);
   }
 }
 /**
@@ -41,6 +52,7 @@ public function addPerson($array){
       $stmt= $this -> dbh ->prepare($sql);
       $stmt->bind_param("isssss", $arr[0], $arr[1], $arr[2], $arr[3], $arr[4], $arr[5]);
       $result = $stmt->execute();
+      return true;
     }else{
       $sql = "REPLACE INTO person (UID,Name,Age,Email,Phone,Gender) VALUES (?,?,?,?,?,?)";
       $stmt= $this -> dbh->prepare($sql);
