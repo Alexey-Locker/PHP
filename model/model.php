@@ -35,6 +35,7 @@ public function connectDB($host,$user,$pass, $db, $charset){
       `Phone` varchar(100) NOT NULL,
       `Gender` varchar(100) NOT NULL
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+    $this->dbh->query("ALTER TABLE `person` ADD PRIMARY KEY (`UID`)");
     $this->dbh->set_charset($charset);
   }
 }
