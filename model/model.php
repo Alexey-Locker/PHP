@@ -52,7 +52,6 @@ public function addPerson($array){
       $stmt= $this -> dbh ->prepare($sql);
       $stmt->bind_param("isssss", $arr[0], $arr[1], $arr[2], $arr[3], $arr[4], $arr[5]);
       $result = $stmt->execute();
-      return true;
     }else{
       $sql = "REPLACE INTO person (UID,Name,Age,Email,Phone,Gender) VALUES (?,?,?,?,?,?)";
       $stmt= $this -> dbh->prepare($sql);
@@ -65,6 +64,7 @@ public function addPerson($array){
      }
     }
 }
+return true;
 }
 
 public function getPerson(){ 
