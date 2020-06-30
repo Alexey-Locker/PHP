@@ -59,7 +59,6 @@ public function addPerson($array){
       $stmt->bind_param("isssss", $arr[0], $arr[1], $arr[2], $arr[3], $arr[4], $arr[5]);
      try{ 
        $result = $stmt->execute();
-       return true;
      }catch(\mysqli_sql_exception $e){
        return false;
      }
